@@ -78,9 +78,18 @@
 
         .hero-content {
             position: relative;
-            z-index: 1;
+            z-index: 2;
         }
         
+        #particle-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
         .feature-icon {
             background-image: linear-gradient(135deg, var(--primary-accent), #2dd4bf);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -117,6 +126,47 @@
             max-width: 600px;
             margin: 0 auto 2rem auto;
         }
+        /* New Animation for Scrolling Logos */
+        .logo-ticker-container {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+        }
+        .logo-ticker-container:before, .logo-ticker-container:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            width: 100px;
+            height: 100%;
+            z-index: 2;
+        }
+        .logo-ticker-container:before {
+            left: 0;
+            background: linear-gradient(to right, var(--light-bg), transparent);
+        }
+        .logo-ticker-container:after {
+            right: 0;
+            background: linear-gradient(to left, var(--light-bg), transparent);
+        }
+        .logo-ticker {
+            display: flex;
+            width: fit-content;
+            animation: scroll 30s linear infinite;
+        }
+        .logo-ticker:hover {
+            animation-play-state: paused;
+        }
+        .logo-item {
+            flex-shrink: 0;
+            padding: 0 4rem; /* 64px */
+            display: flex;
+            align-items: center;
+        }
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
         /* Animation Classes */
         @keyframes fadeInUp {
             from {
@@ -173,6 +223,7 @@
                 <i class="fas fa-brain mr-2 text-cyan-600"></i>AI TalentLink
             </a>
             <div class="hidden md:flex space-x-6 items-center">
+                <a href="#how-it-works" class="text-gray-600 hover:text-cyan-600 transition duration-300">How It Works</a>
                 <a href="#services" class="text-gray-600 hover:text-cyan-600 transition duration-300">Services</a>
                 <a href="#talent-pool" class="text-gray-600 hover:text-cyan-600 transition duration-300">Talent Pool</a>
                 <a href="#features" class="text-gray-600 hover:text-cyan-600 transition duration-300">Features</a>
@@ -184,6 +235,7 @@
         </nav>
         <!-- Mobile Menu -->
         <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#how-it-works" class="block py-2 text-gray-600 hover:text-cyan-600">How It Works</a>
             <a href="#services" class="block py-2 text-gray-600 hover:text-cyan-600">Services</a>
             <a href="#talent-pool" class="block py-2 text-gray-600 hover:text-cyan-600">Talent Pool</a>
             <a href="#features" class="block py-2 text-gray-600 hover:text-cyan-600">Features</a>
@@ -194,6 +246,7 @@
     <!-- Hero Section -->
     <main>
         <section class="hero-gradient text-white py-20 md:py-32">
+            <canvas id="particle-canvas"></canvas>
              <div class="hero-blobs">
                 <div class="blob blob1"></div>
                 <div class="blob blob2"></div>
@@ -229,26 +282,84 @@
             </div>
         </section>
         
-        <!-- Trusted By Section -->
-        <section id="trusted-by" class="py-20 bg-slate-50">
+        <!-- Trusted By Section - Now a scrolling ticker -->
+        <section id="trusted-by" class="py-16 bg-slate-50">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-12 animate-on-scroll">
-                    <h2 class="section-title">Proven Enterprise Experience</h2>
+                    <h2 class="section-title">Powering Industry Leaders</h2>
                     <p class="section-subtitle">Our engineers and researchers have built top-tier products for Fortune 500 companies, leading banks, and global retailers.</p>
                 </div>
-                <div class="flex flex-wrap justify-center items-center gap-x-16 gap-y-8">
-                    <div class="text-4xl font-bold text-gray-400 hover:text-gray-600 transition-colors duration-300 animate-on-scroll" style="transition-delay: 100ms;">SAMSUNG</div>
-                    <div class="text-4xl font-bold text-gray-400 hover:text-gray-600 transition-colors duration-300 animate-on-scroll" style="transition-delay: 200ms;">NIKE</div>
-                    <div class="text-4xl font-bold text-gray-400 hover:text-gray-600 transition-colors duration-300 animate-on-scroll" style="transition-delay: 300ms;">Ipsos</div>
-                    <div class="text-2xl font-semibold text-gray-400 hover:text-gray-600 transition-colors duration-300 animate-on-scroll" style="transition-delay: 400ms;">Fortune 500 Bank</div>
-                    <div class="text-2xl font-semibold text-gray-400 hover:text-gray-600 transition-colors duration-300 animate-on-scroll" style="transition-delay: 500ms;">Global Retailer</div>
+                <div class="logo-ticker-container">
+                    <div class="logo-ticker">
+                        <!-- Original Logos -->
+                        <div class="logo-item text-4xl font-bold text-gray-400">SAMSUNG</div>
+                        <div class="logo-item text-4xl font-bold text-gray-400">NIKE</div>
+                        <div class="logo-item text-4xl font-bold text-gray-400">Ipsos</div>
+                        <div class="logo-item text-4xl font-bold text-gray-400">Vodafone</div>
+                        <div class="logo-item text-4xl font-bold text-gray-400">BT</div>
+                        <!-- Duplicated Logos for seamless loop -->
+                        <div class="logo-item text-4xl font-bold text-gray-400">SAMSUNG</div>
+                        <div class="logo-item text-4xl font-bold text-gray-400">NIKE</div>
+                        <div class="logo-item text-4xl font-bold text-gray-400">Ipsos</div>
+                        <div class="logo-item text-4xl font-bold text-gray-400">Vodafone</div>
+                        <div class="logo-item text-4xl font-bold text-gray-400">BT</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- New "How It Works" Section -->
+        <section id="how-it-works" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16 animate-on-scroll">
+                    <h2 class="section-title">Simple Steps to Your AI Dream Team</h2>
+                    <p class="section-subtitle">Our streamlined process makes it easy to find, hire, and manage top-tier AI talent from around the world.</p>
+                </div>
+                <div class="relative">
+                    <!-- The connecting line -->
+                    
+                    <div class="grid md:grid-cols-3 gap-16 text-center relative">
+                        <!-- Step 1 -->
+                        <div class="animate-on-scroll" style="transition-delay: 100ms;">
+                            <div class="mb-4 inline-block relative">
+                                <div class="w-20 h-20 flex items-center justify-center bg-cyan-500 text-white rounded-full text-3xl shadow-lg">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <div class="absolute top-1/2 -translate-y-1/2 md:left-full md:ml-4 left-1/2 -bottom-8 -translate-x-1/2 md:translate-x-0 bg-white px-2 text-cyan-600 font-bold">Step 1</div>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Define Your Needs</h3>
+                            <p class="text-gray-600">Tell us your project requirements, technical stack, and team dynamics. We'll create a detailed profile for your ideal candidate.</p>
+                        </div>
+                        <!-- Step 2 -->
+                        <div class="animate-on-scroll" style="transition-delay: 300ms;">
+                            <div class="mb-4 inline-block relative">
+                                <div class="w-20 h-20 flex items-center justify-center bg-cyan-500 text-white rounded-full text-3xl shadow-lg">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <div class="absolute top-1/2 -translate-y-1/2 md:left-full md:ml-4 left-1/2 -bottom-8 -translate-x-1/2 md:translate-x-0 bg-white px-2 text-cyan-600 font-bold">Step 2</div>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Receive Your Shortlist</h3>
+                            <p class="text-gray-600">Within 48 hours, we match you with a curated list of pre-vetted AI experts from our exclusive global talent pool.</p>
+                        </div>
+                        <!-- Step 3 -->
+                        <div class="animate-on-scroll" style="transition-delay: 500ms;">
+                            <div class="mb-4 inline-block relative">
+                                <div class="w-20 h-20 flex items-center justify-center bg-cyan-500 text-white rounded-full text-3xl shadow-lg">
+                                    <i class="fas fa-rocket"></i>
+                                </div>
+                                 <div class="absolute top-1/2 -translate-y-1/2 md:left-full md:ml-4 left-1/2 -bottom-8 -translate-x-1/2 md:translate-x-0 bg-white px-2 text-cyan-600 font-bold">Step 3</div>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-2">Onboard & Scale</h3>
+                            <p class="text-gray-600">Interview your top choices and onboard the perfect fit. We handle contracts and payments, so you can focus on building.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
 
         <!-- Services Section -->
-        <section id="services" class="py-20 bg-white">
+        <section id="services" class="py-20 bg-slate-50">
             <div class="container mx-auto px-6">
                 <div class="text-center mb-16 animate-on-scroll">
                     <h2 class="section-title">Comprehensive AI Solutions</h2>
@@ -278,7 +389,7 @@
         </section>
 
         <!-- Talent Pool Section -->
-        <section id="talent-pool" class="py-20 bg-slate-50">
+        <section id="talent-pool" class="py-20 bg-white">
             <div class="container mx-auto px-6">
                  <div class="text-center mb-16 animate-on-scroll">
                     <h2 class="section-title">An Unmatched Global Talent Pool</h2>
@@ -368,46 +479,7 @@
         </section>
         
         <!-- Testimonials Section -->
-        <section id="testimonials" class="py-20 bg-slate-50">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-16 animate-on-scroll">
-                    <h2 class="section-title">Trusted by Innovative Companies</h2>
-                    <p class="section-subtitle">Hear what our clients have to say about building their AI teams with us.</p>
-                </div>
-                <div class="grid lg:grid-cols-3 gap-8">
-                    <div class="testimonial-card p-8 rounded-lg shadow-lg animate-on-scroll" style="transition-delay: 100ms;">
-                        <p class="text-gray-600 mb-6">"AI TalentLink gave us access to a PhD-level computer vision expert we couldn't find anywhere else. The transparency and quality of work have been exceptional."</p>
-                        <div class="flex items-center">
-                            <img src="https://placehold.co/50x50/e0e0e0/333?text=A" class="rounded-full mr-4" alt="Client Avatar">
-                            <div>
-                                <p class="font-semibold text-gray-800">Sarah Chen</p>
-                                <p class="text-sm text-gray-500">CTO, InnovateAI Corp</p>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="testimonial-card p-8 rounded-lg shadow-lg animate-on-scroll" style="transition-delay: 200ms;">
-                        <p class="text-gray-600 mb-6">"Scaling our machine learning team was a breeze. We went from two to ten engineers in a matter of weeks. The hourly billing model is perfect for our agile workflow."</p>
-                        <div class="flex items-center">
-                            <img src="https://placehold.co/50x50/d0d0d0/333?text=B" class="rounded-full mr-4" alt="Client Avatar">
-                            <div>
-                                <p class="font-semibold text-gray-800">Michael Rodriguez</p>
-                                <p class="text-sm text-gray-500">Head of Engineering, DataDriven Inc.</p>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="testimonial-card p-8 rounded-lg shadow-lg animate-on-scroll" style="transition-delay: 300ms;">
-                        <p class="text-gray-600 mb-6">"The performance monitoring tool is a game-changer. It provides the oversight we need while giving the remote engineer the autonomy they deserve. It's a win-win."</p>
-                        <div class="flex items-center">
-                            <img src="https://placehold.co/50x50/c0c0c0/333?text=C" class="rounded-full mr-4" alt="Client Avatar">
-                            <div>
-                                <p class="font-semibold text-gray-800">Emily White</p>
-                                <p class="text-sm text-gray-500">VP of Product, NeuroTech Solutions</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+        
 
 
         <!-- Contact Section -->
@@ -530,18 +602,219 @@
             counterObserver.observe(statsSection);
         }
 
-        // Hero Section Parallax
-        window.addEventListener('scroll', () => {
-            const title = document.getElementById('hero-title');
-            const subtitle = document.getElementById('hero-subtitle');
-            if (title && subtitle) {
-                const scrollY = window.scrollY;
-                title.style.transform = `translateY(${scrollY * 0.3}px)`;
-                subtitle.style.transform = `translateY(${scrollY * 0.2}px)`;
+        // Removed the parallax scroll effect on hero text as it conflicts with the new background animation.
+
+        // Hero Section Neural Network Animation
+        const canvas = document.getElementById('particle-canvas');
+        if (canvas) {
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+
+            let nodes = [];
+            let edges = [];
+            let signals = [];
+
+            const mouse = {
+                x: undefined,
+                y: undefined,
+                radius: 120 // Interaction radius
+            };
+
+            const config = {
+                nodeColor: 'rgba(255, 255, 255, 0.7)',
+                edgeColor: 'rgba(255, 255, 255, 0.2)',
+                signalColor: 'rgba(100, 255, 255, 1)',
+                nodeRadius: 3,
+                layers: [
+                    { count: 12, spacing: canvas.width / 13 },
+                    { count: 8, spacing: canvas.width / 9 },
+                    { count: 10, spacing: canvas.width / 11 }
+                ],
+                signalSpeed: 2,
+                repelStrength: 3, // How strongly nodes move away
+                returnSpeed: 0.05 // How quickly nodes return to original position
+            };
+
+            class Node {
+                constructor(x, y) {
+                    this.originalX = x;
+                    this.originalY = y;
+                    this.x = x;
+                    this.y = y;
+                    this.baseRadius = config.nodeRadius * (Math.random() * 0.5 + 0.75);
+                    this.radius = this.baseRadius;
+                    this.pulseOffset = Math.random() * Math.PI * 2;
+                }
+
+                draw() {
+                    this.radius = this.baseRadius + Math.sin(Date.now() * 0.002 + this.pulseOffset) * 0.5;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = config.nodeColor;
+                    ctx.fill();
+                }
+                
+                update() {
+                    // Interaction with mouse
+                    if (mouse.x !== undefined && mouse.y !== undefined) {
+                        const dx = this.x - mouse.x;
+                        const dy = this.y - mouse.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance < mouse.radius) {
+                            const forceDirectionX = dx / distance;
+                            const forceDirectionY = dy / distance;
+                            const force = (mouse.radius - distance) / mouse.radius;
+                            this.x += forceDirectionX * force * config.repelStrength;
+                            this.y += forceDirectionY * force * config.repelStrength;
+                        } else {
+                            // Return to original position
+                            this.returnToOrigin();
+                        }
+                    } else {
+                         this.returnToOrigin();
+                    }
+                    this.draw();
+                }
+                
+                returnToOrigin() {
+                    if (this.x !== this.originalX) {
+                        const returnDx = this.originalX - this.x;
+                        this.x += returnDx * config.returnSpeed;
+                    }
+                    if (this.y !== this.originalY) {
+                        const returnDy = this.originalY - this.y;
+                        this.y += returnDy * config.returnSpeed;
+                    }
+                }
             }
-        });
+
+            class Signal {
+                constructor(startNode, endNode) {
+                    this.startNode = startNode;
+                    this.endNode = endNode;
+                    this.x = startNode.x;
+                    this.y = startNode.y;
+                    this.progress = 0;
+                }
+
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+                    ctx.fillStyle = config.signalColor;
+                    ctx.fill();
+                }
+
+                update() {
+                    const targetX = this.endNode.x;
+                    const targetY = this.endNode.y;
+                    const startX = this.startNode.x;
+                    const startY = this.startNode.y;
+
+                    const dx = targetX - startX;
+                    const dy = targetY - startY;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const totalSteps = distance / config.signalSpeed;
+
+                    if (this.progress < totalSteps) {
+                        this.progress++;
+                        this.x = startX + (dx / totalSteps) * this.progress;
+                        this.y = startY + (dy / totalSteps) * this.progress;
+                        this.draw();
+                        return true; // Still active
+                    }
+                    return false; // Reached destination
+                }
+            }
+
+
+            function init() {
+                nodes = [];
+                edges = [];
+                signals = [];
+                const layerXPositions = [canvas.width * 0.15, canvas.width * 0.5, canvas.width * 0.85];
+
+                config.layers.forEach((layer, layerIndex) => {
+                    let layerNodes = [];
+                    const ySpacing = canvas.height / (layer.count + 1);
+                    for (let i = 0; i < layer.count; i++) {
+                        const node = new Node(layerXPositions[layerIndex], ySpacing * (i + 1));
+                        layerNodes.push(node);
+                    }
+                    nodes.push(layerNodes);
+                });
+
+                for (let i = 0; i < nodes.length - 1; i++) {
+                    let layerEdges = [];
+                    nodes[i].forEach(startNode => {
+                        nodes[i + 1].forEach(endNode => {
+                            layerEdges.push({ start: startNode, end: endNode });
+                        });
+                    });
+                    edges.push(layerEdges);
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw edges
+                edges.forEach(layer => {
+                    layer.forEach(edge => {
+                        ctx.beginPath();
+                        ctx.moveTo(edge.start.x, edge.start.y);
+                        ctx.lineTo(edge.end.x, edge.end.y);
+                        ctx.strokeStyle = config.edgeColor;
+                        ctx.stroke();
+                    });
+                });
+
+                // Update and draw signals
+                signals = signals.filter(signal => signal.update());
+
+                // Update and draw nodes
+                nodes.forEach(layer => {
+                    layer.forEach(node => node.update());
+                });
+
+
+                // Create new signals periodically
+                if (Math.random() < 0.05 && edges.length > 0) {
+                    const randomLayerIndex = Math.floor(Math.random() * edges.length);
+                    const randomEdge = edges[randomLayerIndex][Math.floor(Math.random() * edges[randomLayerIndex].length)];
+                    signals.push(new Signal(randomEdge.start, randomEdge.end));
+                }
+
+                requestAnimationFrame(animate);
+            }
+
+            window.addEventListener('resize', function() {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+                init();
+            });
+
+            canvas.addEventListener('mousemove', function(event) {
+                const rect = canvas.getBoundingClientRect();
+                mouse.x = event.clientX - rect.left;
+                mouse.y = event.clientY - rect.top;
+            });
+
+            canvas.addEventListener('mouseout', function() {
+                mouse.x = undefined;
+                mouse.y = undefined;
+            });
+            
+            init();
+            animate();
+        }
 
     </script>
 </body>
 </html>
+
+
+
+
 
